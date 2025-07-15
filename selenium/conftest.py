@@ -1,17 +1,17 @@
 import pytest, json
-from selenium.webdriver import Chrome, Firefox, Edge
+from selenium.webdriver import Chrome, Firefox
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
-from playwright.sync_api import sync_playwright
 
-DEFAULT_WAIT_TIME = 8
-SUPPORTED_BROWSERS = ['chrome', 'edge', 'firefox']
+DEFAULT_WAIT_TIME = 9
+SUPPORTED_BROWSERS = ['chrome', 'firefox']
 CHROMEDRIVER_PATH = 'chromedriver'
+FIREFOX_PATH = 'geckodriver'
 CONFIG_PATH = 'config.json'
 
 # Fixture 'scope="session"' provides just 1 run before X tests
 @pytest.fixture(scope='session')
 def config():
-    # Read the JSON config file and returns it as a parsed dict
     with open(CONFIG_PATH) as config_file:
         data = json.load(config_file)
     return data
@@ -31,12 +31,6 @@ def config_wait_time(config):
     # Validate and return the wait time from the config data
     return config['wait_time'] if 'wait_time' in config else DEFAULT_WAIT_TIME
 
-# Fixture for initializing playwright
-@pytest.fixture(scope="session")
-def playwright():
-    with sync_playwright() as p:
-        yield p
-
 @pytest.fixture
 def browser(config_browser, config_wait_time):
     # Initialize WebDriver
@@ -51,12 +45,12 @@ def browser(config_browser, config_wait_time):
         options.add_argument('--disable-dev-shm-usage')
         options.add_argument('--ignore-certificate-errors')
         options.add_argument('--no-sandbox')
+        options.add_argument("--log-level-3")
+        options.add_experimental_option("excludeSwitches", ["enable-logging"])
         options.add_argument('--headless')
-        driver = Chrome(options=options)
+        driver = Chrome(service=Service(), options=options)
     elif config_browser == 'firefox':
         driver = Firefox()
-    elif config_browser == 'edge':
-        driver = Edge()
     else:
         raise Exception(f'"{config_browser}" is not a supported browser')
     # Wait implicitly for elements to be ready before attempting interactions

@@ -1,23 +1,24 @@
-######
-Sample python puzzle scripts.
+Automated interaction with SwagLabs website.
 
-Sample automated test cases with:
-- pytest
-- requests for API test automation
-- playwright&selenium for web browser test automation
-- robot framework sample examples
 
-CI workflow set to run with 'pytest -v' flag for detailed information about files and test cases.
+
+Simple UI tests with selenium \& playwright packages.
+
+
 
 Tech:
-- python 3.13
-- pytest 8.3.4
-- requests 2.32.3
-- playwright 1.51.0
-- selenium 4.29.0
-- robotframework 7.2
 
-Contact:
-e-mail: michaltarski@gmail.com
-LinkedIN: https://www.linkedin.com/in/micha%C5%82-tarski-9680b910a/
-######
+* python 3.13
+* pytest 8.3.4
+* playwright 1.51.0
+* pytest-playwright 0.7.0
+* selenium 4.29.0
+
+
+
+requirements.txt prepared for potential CI workflow in the future
+
+
+
+After reaching the \\swaglabs\\ directory, run tests with detailed information with command: `pytest -v`
+
