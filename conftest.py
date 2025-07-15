@@ -2,17 +2,15 @@ import pytest, json
 from selenium.webdriver import Chrome, Firefox, Edge
 from selenium.webdriver.chrome.options import Options
 
-DEFAULT_WAIT_TIME = 8
-SUPPORTED_BROWSERS = ['chrome', 'edge', 'firefox']
+DEFAULT_WAIT_TIME = 7
+SUPPORTED_BROWSERS = ['chrome', 'firefox']
 CHROMEDRIVER_PATH = 'chromedriver'
-EDGEDRIVER_PATH = 'edgedriver'
 FIREFOX_PATH = 'geckodriver'
 CONFIG_PATH = 'config.json'
 
 # Fixture 'scope="session"' provides just 1 run before X tests
 @pytest.fixture(scope='session')
 def config():
-    # Read the JSON config file and returns it as a parsed dict
     with open(CONFIG_PATH) as config_file:
         data = json.load(config_file)
     return data
@@ -50,8 +48,6 @@ def browser(config_browser, config_wait_time):
         driver = Chrome(options=options)
     elif config_browser == 'firefox':
         driver = Firefox()
-    elif config_browser == 'edge':
-        driver = Edge()
     else:
         raise Exception(f'"{config_browser}" is not a supported browser')
     # Wait implicitly for elements to be ready before attempting interactions
